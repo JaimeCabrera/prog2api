@@ -23,9 +23,12 @@ db.sequelize.sync();
 // });
 
 // simple route
-app.get("/", () => {
-  res.json({ message: "welcome to rest server " });
-});
+// app.get("/", () => {
+//   res.json({ message: "welcome to rest server " });
+// });
+// routes
+require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
 
 // set port
 const PORT = process.env.PORT || 3000;
