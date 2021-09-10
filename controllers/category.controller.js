@@ -3,7 +3,10 @@ const Category = db.category;
 
 exports.create = (req, res) => {
   // validate request
-  const { name, userId } = req.body;
+  const { name } = req.body;
+  const { userId } = req;
+  // const { userId } = req.params;
+  console.log("esto llega del front", userId);
   if (!name) {
     res.status(400).send({
       message: "El campo es obligatorio!",
@@ -32,7 +35,9 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  const { userId } = req.params;
+  // const { userId } = req.body.data;
+  const { userId } = req;
+  console.log(userId);
   Category.findAll({ where: { userId } })
     .then((data) => {
       res.status(200).send(data);

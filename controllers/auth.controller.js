@@ -69,9 +69,13 @@ exports.me = function (req, res) {
     User.findOne({
       where: { id },
       attributes: ["id", "username", "email"],
-    }).then((user) => {
-      return res.status(200).send(user);
-    });
+    })
+      .then((user) => {
+        return res.status(200).send(user);
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message });
+      });
   }
-  res.status(500);
+  // res.status(500).send({ message: err.message });
 };

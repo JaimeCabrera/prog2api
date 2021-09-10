@@ -9,7 +9,7 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/categories/", [authJwt.verifyToken], category.findAll);
+  app.get("/api/categories", [authJwt.verifyToken], category.findAll);
   app.post("/api/categories", [authJwt.verifyToken], category.create);
   app.get(
     "/api/categories/:categoryId",
