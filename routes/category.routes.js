@@ -16,6 +16,12 @@ module.exports = function (app) {
     [authJwt.verifyToken],
     category.findOne
   );
+  app.put(
+    "/api/categories/:categoryId",
+    [authJwt.verifyToken],
+    category.update
+  );
+
   app.delete(
     "/api/categories/:categoryId",
     [authJwt.verifyToken],

@@ -60,29 +60,33 @@ exports.findOne = (req, res) => {
     });
 };
 
-// exports.update = (req, res) => {
-//   const id = req.params.categoryId;
+exports.update = (req, res) => {
+  const id = req.params.categoryId;
+  const { name } = req.body;
 
-//   Tutorial.update(req.body, {
-//     where: { id: id },
-//   })
-//     .then((num) => {
-//       if (num == 1) {
-//         res.send({
-//           message: "Tutorial was updated successfully.",
-//         });
-//       } else {
-//         res.send({
-//           message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Error updating Tutorial with id=" + id,
-//       });
-//     });
-
+  Category.update(
+    { name },
+    {
+      where: { id },
+    }
+  )
+    .then((cat) => {
+      if (cat == 1) {
+        res.send({
+          message: "La categoria fue editada con exito.",
+        });
+      } else {
+        res.send({
+          message: `No se puede editar la categoria con id=${id}. No se encontro la categoria o no existe informacion !`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error editando la categoria con id=" + id,
+      });
+    });
+};
 exports.delete = (req, res) => {
   const { categoryId } = req.params;
   console.log(categoryId);
