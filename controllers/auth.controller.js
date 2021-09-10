@@ -8,6 +8,11 @@ let bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   // save user database
   const { username, email, password } = req.body;
+  // validate request
+  if (!username || !email || !password) {
+    res.status(400).send({ message: "Los campos son obligatorios" });
+    return;
+  }
   // hash password
   const passwordHash = bcrypt.hashSync(password, 8);
   User.create({
@@ -16,7 +21,7 @@ exports.signup = (req, res) => {
     password: passwordHash,
   })
     .then((user) => {
-      res.send({ message: "user was resigtered" });
+      res.status(200).send({ message: "user was resigtered", user });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -25,6 +30,10 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400).send({ message: "Los campos son obligatorios" });
+    return;
+  }
   User.findOne({ where: { email } })
     .then((user) => {
       if (!user) {
@@ -33,8 +42,7 @@ exports.signin = (req, res) => {
       let passwordIsValid = bcrypt.compareSync(password, user.password);
       if (!passwordIsValid) {
         return res.status(401).send({
-          accessToken: null,
-          message: "Invalid Password!",
+          message: "Email o Contraseña incorrectos",
         });
       }
       const token = jwt.sign({ id: user.id }, config.secret, {
@@ -50,4 +58,20 @@ exports.signin = (req, res) => {
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
+};
+// exports.me = (req,res)=>{
+//   if(req.headers &&req.headers.x-access-token)
+// }
+exports.me = function (req, res) {
+  if (req.headers && req.headers["x-access-token"]) {
+    const authorization = req.headers["x-access-token"];
+    const { id } = jwt.verify(authorization, config.secret);
+    User.findOne({
+      where: { id },
+      attributes: ["id", "username", "email"],
+    }).then((user) => {
+      return res.status(200).send(user);
+    });
+  }
+  res.status(500);
 };

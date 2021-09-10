@@ -11,4 +11,5 @@ module.exports = function (app) {
   });
   app.post("/api/auth/signup", [verifySignUp.checkDuplicateEmail], auth.signup);
   app.post("/api/auth/signin", auth.signin);
+  app.get("/api/auth/user", auth.me);
 };
