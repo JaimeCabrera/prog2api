@@ -1,5 +1,4 @@
 const db = require("../models");
-const User = db.user;
 const Category = db.category;
 
 exports.create = (req, res) => {
@@ -33,9 +32,8 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  console.log(req.body);
-  const { userId } = req.body;
-  return Category.findAll({ where: { userId } })
+  const { userId } = req.params;
+  Category.findAll({ where: { userId } })
     .then((data) => {
       res.status(200).send(data);
     })
