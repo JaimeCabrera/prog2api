@@ -16,5 +16,5 @@ db.task = require("./task.model")(sequelize);
 // define relathions user -> categories
 db.user.hasMany(db.category);
 // telathion category ->tasks
-db.category.hasMany(db.task);
+db.category.hasMany(db.task, { onDelete: "cascade" });
 module.exports = db;

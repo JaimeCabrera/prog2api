@@ -1,14 +1,15 @@
+const { reset } = require("nodemon");
 const db = require("../models");
 const Task = db.task;
 
 // create a new task
 exports.create = (req, res) => {
-  const { name, status, priority, categoryId } = req.body;
+  const { name, priority, categoryId } = req.body;
 
   const err = { name: "", status: "", priority: "" };
   // validaciones
-  if (!name) {
-    res.status(400).send((err.name = "El campo nombre es obligatorio"));
+  if (!name || !priority) {
+    res.status(400).send({ message: "Los campos no puede ir vacios" });
     return;
   }
 
@@ -19,7 +20,7 @@ exports.create = (req, res) => {
   };
   Task.create(category)
     .then((data) => {
-      res.status(200).send({ category: data });
+      res.status(200).send({ task: data });
     })
     .catch((err) => {
       res.status(500).send({
@@ -52,6 +53,28 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Error al obtener la tarea con id=" + id,
+      });
+    });
+};
+// find a task and update status
+exports.findAndUpdate = (req, res) => {
+  const { id, status } = req.body;
+  console.log(id, status);
+  Task.update({ status: !status }, { where: { id } })
+    .then((task) => {
+      if (task == 1) {
+        res.status(200).send({
+          message: "La tarea fue marcada como completada.",
+        });
+      } else {
+        res.status(400).send({
+          message: ` No se encontro la tarea o no existe informacion !`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error al cambiar de estado la tarea con id=" + id,
       });
     });
 };
@@ -93,7 +116,7 @@ exports.delete = (req, res) => {
     .then((task) => {
       if (task == 1) {
         res.send({
-          message: "Tarea Eliminada con exito!",
+          message: "La Tarea fue eliminada.",
         });
       } else {
         res.send({

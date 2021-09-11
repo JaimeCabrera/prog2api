@@ -10,9 +10,10 @@ module.exports = function (app) {
     next();
   });
   // create a task
-  app.get("/api/tasks/:categoryId", [authJwt.verifyToken], task.findAll);
+  app.get("/api/tasks", [authJwt.verifyToken], task.findOne);
   app.post("/api/tasks", [authJwt.verifyToken], task.create);
-  app.get("/api/tasks/", [authJwt.verifyToken], task.findOne);
-  app.put("/api/tasks/:taskId", [authJwt.verifyToken], task.update);
+  app.put("/api/tasks/task", [authJwt.verifyToken], task.findAndUpdate);
   app.delete("/api/tasks/:taskId", [authJwt.verifyToken], task.delete);
+  app.put("/api/tasks/:taskId", [authJwt.verifyToken], task.update);
+  app.get("/api/tasks/:categoryId", [authJwt.verifyToken], task.findAll);
 };

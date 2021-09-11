@@ -6,7 +6,6 @@ exports.create = (req, res) => {
   const { name } = req.body;
   const { userId } = req;
   // const { userId } = req.params;
-  console.log("esto llega del front", userId);
   if (!name) {
     res.status(400).send({
       message: "El campo es obligatorio!",
@@ -37,7 +36,6 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   // const { userId } = req.body.data;
   const { userId } = req;
-  console.log(userId);
   Category.findAll({ where: { userId } })
     .then((data) => {
       res.status(200).send(data);
@@ -92,7 +90,6 @@ exports.update = (req, res) => {
 };
 exports.delete = (req, res) => {
   const { categoryId } = req.params;
-  console.log(categoryId);
   Category.destroy({
     where: { id: categoryId },
   })
