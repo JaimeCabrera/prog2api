@@ -74,7 +74,7 @@ exports.me = function (req, res) {
         return res.status(200).send(user);
       })
       .catch((err) => {
-        res.status(500).send({ message: err.message });
+        // res.status(500).send({ message: err.message });
       });
   }
   // res.status(500).send({ message: err.message });

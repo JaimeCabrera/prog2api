@@ -81,10 +81,10 @@ exports.findAndUpdate = (req, res) => {
 // update task by id
 exports.update = (req, res) => {
   const id = req.params.taskId;
-  const { name, priority, status } = req.body;
+  const { name, priority } = req.body;
 
   Task.update(
-    { name, priority, status },
+    { name, priority },
     {
       where: { id },
     }
