@@ -37,7 +37,9 @@ exports.signin = (req, res) => {
   User.findOne({ where: { email } })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res
+          .status(404)
+          .send({ message: "Email o Contraseña incorrectos" });
       }
       let passwordIsValid = bcrypt.compareSync(password, user.password);
       if (!passwordIsValid) {
@@ -53,6 +55,7 @@ exports.signin = (req, res) => {
         username: user.username,
         email: user.email,
         accessToken: token,
+        message: "Usuario Autenticado",
       });
     })
     .catch((err) => {
@@ -71,10 +74,10 @@ exports.me = function (req, res) {
       attributes: ["id", "username", "email"],
     })
       .then((user) => {
-        return res.status(200).send(user);
+        return res.status(200).send({ user, message: "Usuario autenticado" });
       })
       .catch((err) => {
-        // res.status(500).send({ message: err.message });
+        res.status(500).send({ message: err.message });
       });
   }
   // res.status(500).send({ message: err.message });
