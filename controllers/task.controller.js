@@ -1,4 +1,3 @@
-const { reset } = require("nodemon");
 const db = require("../models");
 const Task = db.task;
 

@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const res = require("express/lib/response");
 
 const app = express();
 
@@ -30,6 +29,7 @@ db.sequelize.sync();
 require("./routes/auth.routes")(app);
 require("./routes/category.routes")(app);
 require("./routes/task.routes")(app);
+require("./routes/email.routes")(app);
 
 // set port
 const PORT = process.env.PORT || 3000;
