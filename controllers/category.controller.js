@@ -1,5 +1,6 @@
 const db = require("../models");
 const Category = db.category;
+const Task = db.task;
 
 exports.create = (req, res) => {
   // validate request
@@ -90,17 +91,34 @@ exports.update = (req, res) => {
 };
 exports.delete = (req, res) => {
   const { categoryId } = req.params;
-  Category.destroy({
-    where: { id: categoryId },
-  })
-    .then((cat) => {
-      if (cat == 1) {
-        res.send({
-          message: "Categoria Eliminada con exito!",
-        });
+  // verify if category not have tasks
+  Task.findAll({ where: { categoryId: categoryId } })
+    .then((tasks) => {
+      if (tasks.length === 0) {
+        // console.log("tareas de la categoria", tasks);
+        Category.destroy({
+          where: { id: categoryId },
+        })
+          .then((cat) => {
+            if (cat == 1) {
+              res.send({
+                message: "Categoria Eliminada con exito!",
+              });
+            } else {
+              res.send({
+                message: `No se puede eliminar la categoria con id=${categoryId}. la categoria no existe!`,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "No se puede eliminar la categoria con id" + categoryId,
+            });
+          });
       } else {
-        res.send({
-          message: `No se puede eliminar la categoria con id=${categoryId}. la categoria no existe!`,
+        res.status(500).send({
+          message:
+            "No se puede eliminar la categoria, elimine las tareas antes ",
         });
       }
     })
