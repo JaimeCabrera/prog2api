@@ -63,8 +63,9 @@ exports.findOne = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const id = req.params.categoryId;
-  const { name } = req.body;
+  // const id = req.params.categoryId;
+  const { name, categoryId: id } = req.body;
+  console.log(req.body);
 
   Category.update(
     { name },

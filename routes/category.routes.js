@@ -11,15 +11,11 @@ module.exports = function (app) {
   });
   app.get("/api/categories", [authJwt.verifyToken], category.findAll);
   app.post("/api/categories", [authJwt.verifyToken], category.create);
+  app.put("/api/categories/category", [authJwt.verifyToken], category.update);
   app.get(
     "/api/categories/:categoryId",
     [authJwt.verifyToken],
     category.findOne
-  );
-  app.put(
-    "/api/categories/:categoryId",
-    [authJwt.verifyToken],
-    category.update
   );
 
   app.delete(
