@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+var path = require("path");
 const app = express();
 
 var corsOptions = {
@@ -21,10 +21,10 @@ db.sequelize.sync();
 //   console.log("Drop and re-sync db.");
 // });
 
-// simple route
-// app.get("/", () => {
-//   res.json({ message: "welcome to rest server " });
-// });
+// ssend a index file with info
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname + "/view/index.html"));
+});
 // routes
 require("./routes/auth.routes")(app);
 require("./routes/category.routes")(app);

@@ -53,6 +53,7 @@ exports.findOne = (req, res) => {
   const id = req.params.categoryId;
   Category.findByPk(id)
     .then((data) => {
+      console.log(data);
       res.send(data);
     })
     .catch((err) => {
@@ -65,7 +66,6 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   // const id = req.params.categoryId;
   const { name, categoryId: id } = req.body;
-  console.log(req.body);
 
   Category.update(
     { name },
